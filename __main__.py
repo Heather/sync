@@ -66,10 +66,9 @@ def githgSync(e):
     e.sh("hg update")
     e.sh("hg push git")
 
-def hghgSync(e):
-    e.sh("hg pull")
-    e.sh("hg update")
-    e.sh("hg push hg")
+def hghgSync(branch, upstream, upstreambranch, e):
+    e.sh("hg pull --update --rebase --branch %s %s" % (upstreambranch, upstream))
+    e.sh("hg push %s --force" % branch)
 
 def checkGitModifications(e):
     status = e.command("git status").split("\n")
@@ -109,7 +108,7 @@ class ThreadingSync(Thread):
         elif self.vcs == VCS.git_subversion:
             print ("can't sync git from subversion yet")
         elif self.vcs == VCS.hg_hg:
-            hghgSync(self.e)
+            hghgSync(self.branch, self.upstream, self.upstreambranch, self.e)
 
 #_____________________________________________________________________________________________
 
@@ -245,7 +244,7 @@ def syncgentoo(gentoo_x86):
     else: print("wrong gentoo-x86 path: %s" % gentoo_x86)
 #_____________________________________________________________________________________________
 print("======================================================================")
-print("         sync: Global repositories synchronizer v.3.6  ")
+print("         sync: Global repositories synchronizer v.3.7  ")
 print("======================================================================")
 #_____________________________________________________________________________________________
 parser = OptionParser()
@@ -255,10 +254,13 @@ parser.add_option("-g", "--gentoo",
 (options, args) = parser.parse_args()
 config = ConfigParser()
 if os.name == 'nt':     # -> Windows
-    config.readfp(open('repolist.conf'))
-    syncrepos( config.get('Repos','user') , True)
+    try:
+        config.readfp(open('repolist.conf'))
+        syncrepos( config.get('Repos','user') , True)
+    except IOError: print 'No repolist.conf found, check readme for example'
 else:                   # -> Unix systems
-    config.readfp(open('/etc/repolist.conf'))
+    try: config.readfp(open('/etc/repolist.conf'))
+    except IOError: print 'No /etc/repolist.conf found, check readme for example'
     if options.gentoo:  # -> Gentoo-x86:
         if os.geteuid() != 0: sudo = True
         gentoo_x86 = config.get('Gentoo', 'gentoo-x86')

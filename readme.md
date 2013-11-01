@@ -2,17 +2,19 @@ Sync is util which will help you to keep your forks up to date!
 
 all you need is: /etc/conf.d/repolist.conf or ../repolist.conf on windows
 
-( works on windows since 1.8 version )
-
 ``` shell
 [Repos]
 user:
+  nemerle -t git -b master,indent -u master
   /home/nen/contrib/haskell/hackport -t git
   /home/nen/contrib/haskell/hackport/cabal -p /home/nen/contrib/haskell/hackport
 
   /home/nen/contrib/mono/FAKE -t git -b develop
+  git@github.com:Heather/gentoo-haskell.git git@github.com:gentoo-haskell/gentoo-haskell.git
 sudo:
   /home/gentoo-haskell
+[Gentoo]
+gentoo-x86: /home/gentoo-x86
 ```
 
 (git and master branch are defaults)

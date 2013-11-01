@@ -1,6 +1,0 @@
-[Repos]
-user:
-    NemerleWeb
-    UnionArgParser
-    nemerle -t git -b master,indent -u master
-    git@github.com:Heather/gentoo-haskell.git git@github.com:gentoo-haskell/gentoo-haskell.git
