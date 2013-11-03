@@ -244,7 +244,7 @@ def syncgentoo(gentoo_x86):
     else: print("wrong gentoo-x86 path: %s" % gentoo_x86)
 #_____________________________________________________________________________________________
 print("======================================================================")
-print("         sync: Global repositories synchronizer v.3.7  ")
+print("         sync: Global repositories synchronizer v.3.8  ")
 print("======================================================================")
 #_____________________________________________________________________________________________
 parser = OptionParser()
@@ -257,10 +257,10 @@ if os.name == 'nt':     # -> Windows
     try:
         config.readfp(open('repolist.conf'))
         syncrepos( config.get('Repos','user') , True)
-    except IOError: print 'No repolist.conf found, check readme for example'
+    except IOError: print('No repolist.conf found, check readme for example')
 else:                   # -> Unix systems
     try: config.readfp(open('/etc/repolist.conf'))
-    except IOError: print 'No /etc/repolist.conf found, check readme for example'
+    except IOError: print('No /etc/repolist.conf found, check readme for example')
     if options.gentoo:  # -> Gentoo-x86:
         if os.geteuid() != 0: sudo = True
         gentoo_x86 = config.get('Gentoo', 'gentoo-x86')
