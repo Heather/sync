@@ -1,5 +1,7 @@
 Sync is util which will help you to keep your forks up to date!
 
+[![Build Status](https://travis-ci.org/Heather/sync.png?branch=master)](https://travis-ci.org/Heather/sync)
+
 all you need is: /etc/conf.d/repolist.conf or ../repolist.conf on windows
 
 ``` shell
