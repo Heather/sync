@@ -259,22 +259,23 @@ if os.name == 'nt':     # -> Windows
         syncrepos( config.get('Repos','user') , True)
     except IOError: print('No repolist.conf found, check readme for example')
 else:                   # -> Unix systems
-    try: config.readfp(open('/etc/repolist.conf'))
+    try:
+        config.readfp(open('/etc/repolist.conf'))
+        if options.gentoo:  # -> Gentoo-x86:
+            if os.geteuid() != 0: sudo = True
+            gentoo_x86 = config.get('Gentoo', 'gentoo-x86')
+            syncgentoo(gentoo_x86)
+        else:               # -> Default
+            if os.geteuid() == 0:
+                print("warning: running from root, only root repositories is syncing")
+            else:
+                user = config.get('Repos','user')
+                syncrepos(user, False)
+                sudo = True
+            # -> Root
+            root = config.get('Repos','sudo')
+            syncrepos(root, False)
     except IOError: print('No /etc/repolist.conf found, check readme for example')
-    if options.gentoo:  # -> Gentoo-x86:
-        if os.geteuid() != 0: sudo = True
-        gentoo_x86 = config.get('Gentoo', 'gentoo-x86')
-        syncgentoo(gentoo_x86)
-    else:               # -> Default
-        if os.geteuid() == 0:
-            print("warning: running from root, only root repositories is syncing")
-        else:
-            user = config.get('Repos','user')
-            syncrepos(user, False)
-            sudo = True
-        # -> Root
-        root = config.get('Repos','sudo')
-        syncrepos(root, False)
 #_____________________________________________________________________________________________
 print("  Statistics:  ")
 print("----------------------------------------------------------------------")
