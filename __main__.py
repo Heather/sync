@@ -44,6 +44,7 @@ class shellrunner():
 # Shell scripts
 
 def gitSync(branch, upstream, upstreambranch, e):
+    e.sh("git reset --hard")
     e.sh("git checkout %s" % branch)
     e.sh("git rebase --abort")
     e.sh("git pull origin %s" % branch)
@@ -244,7 +245,7 @@ def syncgentoo(gentoo_x86):
     else: print("wrong gentoo-x86 path: %s" % gentoo_x86)
 #_____________________________________________________________________________________________
 print("======================================================================")
-print("         sync: Global repositories synchronizer v.3.9  ")
+print("         sync: Global repositories synchronizer v.4.0  ")
 print("======================================================================")
 #_____________________________________________________________________________________________
 parser = OptionParser()
