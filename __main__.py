@@ -7,9 +7,9 @@ from threading import Thread
 from optparse import OptionParser
 
 # Python 2x / 3x compatibility
-try:  from configparser import ConfigParser 
-except ImportError: 
-    from ConfigParser import ConfigParser 
+try:  from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
 from subprocess import Popen, PIPE
 
 #_____________________________________________________________________________________________
@@ -124,8 +124,8 @@ def DoUpdate(vcs, branch, useub, haveparent,upstream, upstreambranch, parent, sh
     failed = True # Because not success yet
     mustend = time.time() + 180
     while time.time() < mustend:
-        if thrd.is_alive(): time.sleep(0.25)  
-        else: 
+        if thrd.is_alive(): time.sleep(0.25)
+        else:
             success+=1
             print(" --> successful synchronized :)")
             if haveparent:
@@ -137,15 +137,15 @@ def DoUpdate(vcs, branch, useub, haveparent,upstream, upstreambranch, parent, sh
                 succp = True
                 mustendp = time.time() + 180
                 while time.time() < mustendp:
-                    if thrdp.is_alive(): time.sleep(0.25)  
-                    else: 
+                    if thrdp.is_alive(): time.sleep(0.25)
+                    else:
                         print(" --> %s : successful synchronized :)" % parent)
                         succp = False
                         break
                 if succp: print(" --> %s : timed out :(" % parent)
             failed = False
             break
-    if failed: 
+    if failed:
         error+=1
         print(" --> timed out :(")
 
@@ -155,7 +155,7 @@ def SyncStarter(repo, shell):
     global fst
     global total
     global error
-    
+
     vcs = VCS.git
     useub = False
     haveparent = False
@@ -172,7 +172,7 @@ def SyncStarter(repo, shell):
 
     if len(r) > 1:
         svcs = ((r[1]).split(" "))[1]
-        vcs = { 
+        vcs = {
             'git'       : VCS.git,
             'git git'   : VCS.git_git,
             'git hg'    : VCS.git_mercurial,
@@ -200,7 +200,7 @@ def SyncStarter(repo, shell):
         if len(rpth) > 1:
             upstream = rpth[1]
             print(" --> upstream: %s" % upstream)
-        else: 
+        else:
             print(" --> %s : Failed to get upstream branch :(" % pth)
             return
         vcs = VCS.git
@@ -224,15 +224,14 @@ def SyncStarter(repo, shell):
         else:
             total += 1
             DoUpdate(vcs, branch, useub, haveparent, upstream, upstreambranch, parent, shell)
-    else: 
+    else:
         error+=1
         print(" --> Failed, no such dir: %s :(" % pdir)
     print("______________________________________________________________________")
 
 #_____________________________________________________________________________________________
-
-def syncrepos(repos, shell): 
-    for r in repos.split("\n"): 
+def syncrepos(repos, shell):
+    for r in repos.split("\n"):
         if r: SyncStarter(r, shell)
 def syncgentoo(gentoo_x86):
     if os.path.exists(gentoo_x86):
