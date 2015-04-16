@@ -242,15 +242,21 @@ def syncgentoo(gentoo_x86):
         print( "##====---- regen cache for ::gentoo-x86 ----====##" )
         e.sh("egencache --update --repo=gentoo --portdir=%s --jobs=2" % gentoo_x86)
     else: print("wrong gentoo-x86 path: %s" % gentoo_x86)
+def syncportage():
+    e = shellrunner(False)
+    e.sh("emerge --sync")
 #_____________________________________________________________________________________________
 print("======================================================================")
-print("         sync: Global repositories synchronizer v.4.0  ")
+print("         sync: Global repositories synchronizer v.4.1  ")
 print("======================================================================")
 #_____________________________________________________________________________________________
 parser = OptionParser()
 parser.add_option("-g", "--gentoo",
                   action="store_true", dest="gentoo", default=False,
                   help="only sync Genoo-xf86")
+parser.add_option("-s", "--sync",
+                  action="store_true", dest="emerge", default=False,
+                  help="emerge --sync after forks sync")
 (options, args) = parser.parse_args()
 config = ConfigParser()
 try:
@@ -273,6 +279,8 @@ try:
             # -> Root
             root = config.get('Repos','sudo')
             syncrepos(root, False)
+            if options.emerge: # -> emerge --sync:
+                syncportage()
 except IOError: print('No repolist.conf found, check readme for example')
 #_____________________________________________________________________________________________
 print("  Statistics:  ")
