@@ -13,7 +13,6 @@ except ImportError:
 from subprocess import Popen, PIPE
 
 #_____________________________________________________________________________________________
-
 class VCS:
     git=0
     git_git=1
@@ -40,9 +39,9 @@ class shellrunner():
         for s in (       self.command("sudo %s" % s) \
             if sudo else self.command(s)).split("\n"):
             if not s.startswith("b"): print(s)
+
 #_____________________________________________________________________________________________
 # Shell scripts
-
 def gitSync(branch, upstream, upstreambranch, e):
     e.sh("git reset --hard")
     e.sh("git checkout %s" % branch)
@@ -78,7 +77,6 @@ def checkGitModifications(e):
 
 #_____________________________________________________________________________________________
 # Threads
-
 class ParentUpdate(Thread):
     def __init__(self, vcs, branch, shell):
         Thread.__init__(self)
@@ -112,7 +110,6 @@ class ThreadingSync(Thread):
             hghgSync(self.branch, self.upstream, self.upstreambranch, self.e)
 
 #_____________________________________________________________________________________________
-
 def DoUpdate(vcs, branch, useub, haveparent,upstream, upstreambranch, parent, shell):
     global success
     global error
@@ -150,7 +147,6 @@ def DoUpdate(vcs, branch, useub, haveparent,upstream, upstreambranch, parent, sh
         print(" --> timed out :(")
 
 #_____________________________________________________________________________________________
-
 def SyncStarter(repo, shell):
     global fst
     global total
@@ -245,10 +241,13 @@ def syncgentoo(gentoo_x86):
 def syncportage():
     e = shellrunner(False)
     e.sh("emerge --sync")
+    e.sh("eix-update")
+
 #_____________________________________________________________________________________________
 print("======================================================================")
-print("         sync: Global repositories synchronizer v.4.1  ")
+print("         sync: Global repositories synchronizer v.4.2  ")
 print("======================================================================")
+
 #_____________________________________________________________________________________________
 parser = OptionParser()
 parser.add_option("-g", "--gentoo",
@@ -282,6 +281,7 @@ try:
             if options.emerge: # -> emerge --sync:
                 syncportage()
 except IOError: print('No repolist.conf found, check readme for example')
+
 #_____________________________________________________________________________________________
 print("  Statistics:  ")
 print("----------------------------------------------------------------------")
@@ -289,4 +289,5 @@ print("      total : %d" % total)
 print("      success : %d" % success)
 print("      errors : %d" % error)
 print("======================================================================")
+
 #_____________________________________________________________________________________________
