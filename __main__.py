@@ -143,7 +143,7 @@ def DoUpdate(vcs, branch, useub, haveparent,upstream, upstreambranch, parent, sh
             failed = False
             break
     if failed:
-        error+=1
+        error += 1
         print(" --> timed out :(")
 
 #_____________________________________________________________________________________________
@@ -245,7 +245,7 @@ def syncportage():
 
 #_____________________________________________________________________________________________
 print("======================================================================")
-print("         sync: Global repositories synchronizer v.4.2  ")
+print("         sync: Global repositories synchronizer v.4.3  ")
 print("======================================================================")
 
 #_____________________________________________________________________________________________
@@ -280,14 +280,12 @@ try:
             syncrepos(root, False)
             if options.emerge: # -> emerge --sync:
                 syncportage()
-except IOError: print('No repolist.conf found, check readme for example')
+    print("  Statistics:  ")
+    print("----------------------------------------------------------------------")
+    print("      total : %d" % total)
+    print("      success : %d" % success)
+    print("      errors : %d" % error)
+except IOError:
+    print('No repolist.conf found, check readme for example')
 
-#_____________________________________________________________________________________________
-print("  Statistics:  ")
-print("----------------------------------------------------------------------")
-print("      total : %d" % total)
-print("      success : %d" % success)
-print("      errors : %d" % error)
 print("======================================================================")
-
-#_____________________________________________________________________________________________
