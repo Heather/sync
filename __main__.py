@@ -229,15 +229,6 @@ def SyncStarter(repo, shell):
 def syncrepos(repos, shell):
     for r in repos.split("\n"):
         if r: SyncStarter(r, shell)
-def syncgentoo(gentoo_x86):
-    if os.path.exists(gentoo_x86):
-        os.chdir(gentoo_x86)
-        e = shellrunner(False)
-        print( "##====---- pulling gentoo-x86 ----====##" )
-        e.sh("cvs update")
-        print( "##====---- regen cache for ::gentoo-x86 ----====##" )
-        e.sh("egencache --update --repo=gentoo --portdir=%s --jobs=2" % gentoo_x86)
-    else: print("wrong gentoo-x86 path: %s" % gentoo_x86)
 def syncportage():
     e = shellrunner(False)
     e.sh("emerge --sync")
@@ -245,14 +236,11 @@ def syncportage():
 
 #_____________________________________________________________________________________________
 print("======================================================================")
-print("         sync: Global repositories synchronizer v.4.3  ")
+print("         sync: Global repositories synchronizer v.4.4  ")
 print("======================================================================")
 
 #_____________________________________________________________________________________________
 parser = OptionParser()
-parser.add_option("-g", "--gentoo",
-                  action="store_true", dest="gentoo", default=False,
-                  help="only sync Genoo-xf86")
 parser.add_option("-s", "--sync",
                   action="store_true", dest="emerge", default=False,
                   help="emerge --sync after forks sync")
@@ -264,22 +252,17 @@ try:
         syncrepos( config.get('Repos','user') , True)
     else:                   # -> Unix systems
         config.readfp(open('/etc/repolist.conf'))
-        if options.gentoo:  # -> Gentoo-x86:
-            if os.geteuid() != 0: sudo = True
-            gentoo_x86 = config.get('Gentoo', 'gentoo-x86')
-            syncgentoo(gentoo_x86)
-        else:               # -> Default
-            if os.geteuid() == 0:
-                print("warning: running from root, only root repositories is syncing")
-            else:
-                user = config.get('Repos','user')
-                syncrepos(user, False)
-                sudo = True
-            # -> Root
-            root = config.get('Repos','sudo')
-            syncrepos(root, False)
-            if options.emerge: # -> emerge --sync:
-                syncportage()
+        if os.geteuid() == 0:
+            print("warning: running from root, only root repositories is syncing")
+        else:
+            user = config.get('Repos','user')
+            syncrepos(user, False)
+            sudo = True
+        # -> Root
+        root = config.get('Repos','sudo')
+        syncrepos(root, False)
+        if options.emerge: # -> emerge --sync:
+            syncportage()
     print("  Statistics:  ")
     print("----------------------------------------------------------------------")
     print("      total : %d" % total)
