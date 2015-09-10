@@ -15,8 +15,6 @@ user:
   git@github.com:Heather/gentoo-haskell.git git@github.com:gentoo-haskell/gentoo-haskell.git
 sudo:
   /home/gentoo-haskell
-[Gentoo]
-gentoo-x86: /home/gentoo-x86
 ```
 
 (git and master branch are defaults)
