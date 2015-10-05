@@ -170,10 +170,10 @@ def SyncStarter(repo, shell):
         svcs = ((r[1]).split(" "))[1]
         vcs = {
             'git'       : VCS.git,
-            'git pull'  : VCS.git_pull,
-            'git hg'    : VCS.git_mercurial,
-            'git svn'   : VCS.git_subversion,
-            'hg hg'     : VCS.hg_hg}[svcs]
+            'git-pull'  : VCS.git_pull,
+            'git-hg'    : VCS.git_mercurial,
+            'git-svn'   : VCS.git_subversion,
+            'hg-hg'     : VCS.hg_hg}[svcs]
 
     t = repo.split(" -b")   # <----- Branch
     if len(t) > 1:
