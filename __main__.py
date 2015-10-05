@@ -15,7 +15,7 @@ from subprocess import Popen, PIPE
 #_____________________________________________________________________________________________
 class VCS:
     git=0
-    git_git=1
+    git_pull=1
     git_mercurial=2
     git_subversion=3
     hg_hg=5
@@ -56,10 +56,10 @@ def gitPU(branch, e):
     e.sh("git commit -am submodule")
     e.sh("git push -f origin %s" % branch)
 
-def gitgitSync(e):
-    e.sh("git pull origin master")
-    e.sh("git fetch git master")
-    e.sh("git push -f git master")
+def gitPull(e):
+    e.sh("git reset --hard")
+    e.sh("git checkout %s" % branch)
+    e.sh("git pull origin %s" % branch)
 
 def githgSync(e):
     e.sh("hg pull")
@@ -100,8 +100,8 @@ class ThreadingSync(Thread):
         if self.vcs == VCS.git:
             checkGitModifications(self.e)
             gitSync(self.branch, self.upstream, self.upstreambranch, self.e)
-        elif self.vcs == VCS.git_git:
-            gitgitSync(self.e)
+        elif self.vcs == VCS.git_pull:
+            gitPull(self.e)
         elif self.vcs == VCS.git_mercurial:
             githgSync(self.e)
         elif self.vcs == VCS.git_subversion:
@@ -170,7 +170,7 @@ def SyncStarter(repo, shell):
         svcs = ((r[1]).split(" "))[1]
         vcs = {
             'git'       : VCS.git,
-            'git git'   : VCS.git_git,
+            'git pull'  : VCS.git_pull,
             'git hg'    : VCS.git_mercurial,
             'git svn'   : VCS.git_subversion,
             'hg hg'     : VCS.hg_hg}[svcs]
@@ -236,7 +236,7 @@ def syncportage():
 
 #_____________________________________________________________________________________________
 print("======================================================================")
-print("         sync: Global repositories synchronizer v.4.4  ")
+print("         sync: Global repositories synchronizer v.4.5  ")
 print("======================================================================")
 
 #_____________________________________________________________________________________________
