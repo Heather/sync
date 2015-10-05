@@ -56,7 +56,7 @@ def gitPU(branch, e):
     e.sh("git commit -am submodule")
     e.sh("git push -f origin %s" % branch)
 
-def gitPull(e):
+def gitPull(branch, e):
     e.sh("git reset --hard")
     e.sh("git checkout %s" % branch)
     e.sh("git pull origin %s" % branch)
@@ -101,7 +101,7 @@ class ThreadingSync(Thread):
             checkGitModifications(self.e)
             gitSync(self.branch, self.upstream, self.upstreambranch, self.e)
         elif self.vcs == VCS.git_pull:
-            gitPull(self.e)
+            gitPull(self.branch, self.e)
         elif self.vcs == VCS.git_mercurial:
             githgSync(self.e)
         elif self.vcs == VCS.git_subversion:
