@@ -1,4 +1,4 @@
-Sync is util which will help you to keep your forks up to date!
+ - Sync is util which will help you to keep your forks up to date! (deprecated / recoded in haskell)
 
 [![Build Status](https://travis-ci.org/Heather/sync.png?branch=master)](https://travis-ci.org/Heather/sync)
 
